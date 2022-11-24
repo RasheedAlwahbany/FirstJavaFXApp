@@ -189,16 +189,15 @@ public class LuxuryCampController {
             }
         }
         if (position >= 0) {
-                if (Integer.parseInt(receptionNoOfGuest.getText()) == 0) {
-                    detailsRow.getCleaningStatus().setStatus("Requires Cleaning");
-                    detailsRow.getCleaningStatus().setStatus("Unavailable");
-                    detailsRow.getCleaningStatus().setStatus("Unoccupied");
-                }
-                detailsRow.getReception().setNumberGuests(0);
-                if (position >= 0)
-                    details.set(position, detailsRow);
-                else
-                    details.add(detailsRow);
+            detailsRow.getCleaningStatus().setStatus("Requires Cleaning");
+            detailsRow.setAvailability("Unavailable");
+            detailsRow.setOccupancy("Unoccupied");
+            cleaningStatus.setValue(new CleaningStatus("Requires Cleaning"));
+            detailsRow.getReception().setNumberGuests(0);
+            if (position >= 0)
+                details.set(position, detailsRow);
+            else
+                details.add(detailsRow);
             databaseModel.setAccommodationDetails(details);
         }
     }
@@ -206,5 +205,10 @@ public class LuxuryCampController {
     @FXML
     void logOut() {
 
+    }
+
+    @FXML
+    void toggleCleanStatus(){
+        
     }
 }
