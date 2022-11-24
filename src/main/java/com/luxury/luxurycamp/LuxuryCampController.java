@@ -1,5 +1,6 @@
 package com.luxury.luxurycamp;
 
+import com.luxury.luxurycamp.models.AccommodationArea;
 import com.luxury.luxurycamp.models.AccommodationDetails;
 import com.luxury.luxurycamp.models.CleaningStatus;
 import javafx.beans.property.SimpleStringProperty;
@@ -36,13 +37,14 @@ public class LuxuryCampController {
     private TableColumn<AccommodationDetails, String> breakfastColumn;
 
     @FXML
-    private ComboBox<CleaningStatus> area;
+    private ComboBox<AccommodationArea> area;
     @FXML
     private ComboBox<CleaningStatus> cleaningStatus;
 
     @FXML
     void initialize() {
         cleaningStatus.setItems(databaseModel.getCleaningStatuses());
+        area.setItems(databaseModel.getAccommodationAreas());
         noColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNo() + ""));
         accommTypeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAccommType()));
         occupancyColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getOccupancy()));

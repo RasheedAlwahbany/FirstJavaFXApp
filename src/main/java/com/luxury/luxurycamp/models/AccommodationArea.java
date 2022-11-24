@@ -44,5 +44,10 @@ public class AccommodationArea {
     public void setNumRequireCleaning(int numRequireCleaning) {
         this.numRequireCleaning = numRequireCleaning;
     }
+
+    @Override
+    public String toString() {
+        return area;
+    }
 }
 
