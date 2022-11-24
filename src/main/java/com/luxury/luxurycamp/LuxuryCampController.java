@@ -98,95 +98,109 @@ public class LuxuryCampController {
         guestsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().getNumberGuests() + ""));
         breakfastColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().isBreakfastRequired() + ""));
         tableView.setItems(databaseModel.getAccommodationDetails());
-        receptionCheckOut.setDisable(true);
     }
 
     @FXML
     void tableSelectedItem() {
-        TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
-        int row = pos.getRow();
-        AccommodationDetails item = tableView.getItems().get(row);
+        AccommodationDetails item = tableView.getSelectionModel().getSelectedItem();
         setAccommdatesInformatios(item);
     }
 
 
     @FXML
     void checkIn() {
-        if (tableView.getSelectionModel().getSelectedIndex() >= 0) {
-
-            AccommodationDetails detailsRow = null;
-            int position = -1;
-            ObservableList<AccommodationDetails> details = databaseModel.getAccommodationDetails();
-
-            TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(tableView.getSelectionModel().getSelectedIndex());
-            int row = pos.getRow();
-            AccommodationDetails item = tableView.getItems().get(row);
-            for (int i = 0; i < details.size(); i++) {
-                detailsRow = details.get(i);
-                if (detailsRow == item) {
-                    position = i;
-                    break;
-                }
+        AccommodationDetails detailsRow = null;
+        int position = -1;
+        ObservableList<AccommodationDetails> details = databaseModel.getAccommodationDetails();
+        AccommodationDetails item = tableView.getSelectionModel().getSelectedItem();
+        for (int i = 0; i < details.size(); i++) {
+            detailsRow = details.get(i);
+            if (detailsRow == item) {
+                position = i;
+                break;
             }
-            if (position >= 0) {
-//                detailsRow.getArea().setArea(area.getValue().getArea());
-                detailsRow.getArea().setDescription(areaDescription.getText());
-                if (!breakfastNo.getText().matches(""))
-                    detailsRow.getArea().setNumOfBreakfast(Integer.parseInt(breakfastNo.getText()));
-                else
-                    detailsRow.getArea().setNumOfBreakfast(0);
-                detailsRow.getArea().setNumRequireCleaning(Integer.parseInt(requireCleaning.getText()));
-
-
-                detailsRow.getCleaningStatus().setStatus(cleaningStatus.getValue().getStatus());
-                detailsRow.getReception().setFirstName(receptionFName.getText());
-                detailsRow.getReception().setLastName(receptionLName.getText());
-                if (!breakfastNo.getText().matches(""))
-                    detailsRow.getReception().setTelephoneNo(Integer.parseInt(breakfastNo.getText()));
-                else
-                    detailsRow.getReception().setTelephoneNo(0);
-                if (!receptionNoOfGuest.getText().matches(""))
-                    detailsRow.getReception().setNumberGuests(Integer.parseInt(receptionNoOfGuest.getText()));
-                else
-                    detailsRow.getReception().setNumberGuests(0);
-                detailsRow.getReception().setCheckInDate(receptionCheckInDate.getText());
-                if (!receptionnumberNight.getText().matches(""))
-                    detailsRow.getReception().setNumberNights(Integer.parseInt(receptionnumberNight.getText()));
-                else
-                    detailsRow.getReception().setNumberNights(0);
-                detailsRow.getReception().setBreakfastRequired(receptionIsBreakfastRequired.isSelected());
-
-
-                detailsRow.getAccommodationInfo().setAccommType(accomInfoType.getText());
-                if (!accomInfoType.getText().matches(""))
-                    detailsRow.getAccommodationInfo().setAccommNumber(Integer.parseInt(accomInfoNo.getText()));
-                else
-                    detailsRow.getAccommodationInfo().setAccommNumber(0);
-                if (!accomInfoAccommodates.getText().matches(""))
-                    detailsRow.getAccommodationInfo().setAccommDates(Integer.parseInt(accomInfoAccommodates.getText()));
-                else
-                    detailsRow.getAccommodationInfo().setAccommDates(0);
-                if (!accomInfoPricePerNight.getText().matches(""))
-                    detailsRow.getAccommodationInfo().setPricePerNight(Double.parseDouble(accomInfoPricePerNight.getText()));
-                else
-                    detailsRow.getAccommodationInfo().setPricePerNight(0);
-                detailsRow.getAccommodationInfo().setNotes(accomInfoNotes.getText());
-
-                if (position == 0)
-                    details.set(position, detailsRow);
-                else
-                    details.add(detailsRow);
-
-
-            }
-            databaseModel.setAccommodationDetails(details);
         }
+        if (position >= 0) {
+            if (Integer.parseInt(receptionNoOfGuest.getText()) > 0) {
+                detailsRow.getCleaningStatus().setStatus("Clean");
+                detailsRow.setAvailability("Unavailable");
+                detailsRow.setOccupancy("Occupied");
+                receptionCheckIn.setDisable(false);
+                receptionCheckOut.setDisable(true);
+            }
+            detailsRow.getArea().setDescription(areaDescription.getText());
+            if (!breakfastNo.getText().matches(""))
+                detailsRow.getArea().setNumOfBreakfast(Integer.parseInt(breakfastNo.getText()));
+            else
+                detailsRow.getArea().setNumOfBreakfast(0);
+            detailsRow.getArea().setNumRequireCleaning(Integer.parseInt(requireCleaning.getText()));
+            detailsRow.getCleaningStatus().setStatus(cleaningStatus.getValue().getStatus());
+            detailsRow.getReception().setFirstName(receptionFName.getText());
+            detailsRow.getReception().setLastName(receptionLName.getText());
+            if (!breakfastNo.getText().matches(""))
+                detailsRow.getReception().setTelephoneNo(Integer.parseInt(breakfastNo.getText()));
+            else
+                detailsRow.getReception().setTelephoneNo(0);
+            if (!receptionNoOfGuest.getText().matches(""))
+                detailsRow.getReception().setNumberGuests(Integer.parseInt(receptionNoOfGuest.getText()));
+            else
+                detailsRow.getReception().setNumberGuests(0);
+            detailsRow.getReception().setCheckInDate(receptionCheckInDate.getText());
+            if (!receptionnumberNight.getText().matches(""))
+                detailsRow.getReception().setNumberNights(Integer.parseInt(receptionnumberNight.getText()));
+            else
+                detailsRow.getReception().setNumberNights(0);
+            detailsRow.getReception().setBreakfastRequired(receptionIsBreakfastRequired.isSelected());
+            detailsRow.getAccommodationInfo().setAccommType(accomInfoType.getText());
+            if (!accomInfoType.getText().matches(""))
+                detailsRow.getAccommodationInfo().setAccommNumber(Integer.parseInt(accomInfoNo.getText()));
+            else
+                detailsRow.getAccommodationInfo().setAccommNumber(0);
+            if (!accomInfoAccommodates.getText().matches(""))
+                detailsRow.getAccommodationInfo().setAccommDates(Integer.parseInt(accomInfoAccommodates.getText()));
+            else
+                detailsRow.getAccommodationInfo().setAccommDates(0);
+            if (!accomInfoPricePerNight.getText().matches(""))
+                detailsRow.getAccommodationInfo().setPricePerNight(Double.parseDouble(accomInfoPricePerNight.getText()));
+            else
+                detailsRow.getAccommodationInfo().setPricePerNight(0);
+            detailsRow.getAccommodationInfo().setNotes(accomInfoNotes.getText());
+
+            if (position == 0)
+                details.set(position, detailsRow);
+            else
+                details.add(detailsRow);
+        }
+        databaseModel.setAccommodationDetails(details);
 
     }
 
     @FXML
     void checkOut() {
-
+        AccommodationDetails detailsRow = null;
+        int position = -1;
+        ObservableList<AccommodationDetails> details = databaseModel.getAccommodationDetails();
+        AccommodationDetails item = tableView.getSelectionModel().getSelectedItem();
+        for (int i = 0; i < details.size(); i++) {
+            detailsRow = details.get(i);
+            if (detailsRow == item) {
+                position = i;
+                break;
+            }
+        }
+        if (position >= 0) {
+                if (Integer.parseInt(receptionNoOfGuest.getText()) == 0) {
+                    detailsRow.getCleaningStatus().setStatus("Requires Cleaning");
+                    detailsRow.getCleaningStatus().setStatus("Unavailable");
+                    detailsRow.getCleaningStatus().setStatus("Unoccupied");
+                }
+                detailsRow.getReception().setNumberGuests(0);
+                if (position >= 0)
+                    details.set(position, detailsRow);
+                else
+                    details.add(detailsRow);
+            databaseModel.setAccommodationDetails(details);
+        }
     }
 
     @FXML
