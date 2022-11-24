@@ -7,6 +7,7 @@ public class CleaningStatus {
         this.status = status;
     }
 
+
     public String getStatus() {
         return status;
     }

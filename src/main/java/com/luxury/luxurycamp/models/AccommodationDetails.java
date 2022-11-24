@@ -21,6 +21,7 @@ public class AccommodationDetails {
         this.accommodationInfo = accommodationInfo;
     }
 
+
     public int getNo() {
         return no;
     }

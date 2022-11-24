@@ -15,6 +15,7 @@ public class AccommodationInfo {
         this.notes = notes;
     }
 
+
     public String getAccommType() {
         return accommType;
     }

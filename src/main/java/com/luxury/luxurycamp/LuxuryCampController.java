@@ -1,9 +1,6 @@
 package com.luxury.luxurycamp;
 
-import com.luxury.luxurycamp.models.AccommodationArea;
-import com.luxury.luxurycamp.models.AccommodationDetails;
-import com.luxury.luxurycamp.models.AccommodationsReception;
-import com.luxury.luxurycamp.models.CleaningStatus;
+import com.luxury.luxurycamp.models.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,45 +35,56 @@ public class LuxuryCampController {
     @FXML
     private ComboBox<AccommodationArea> area;
     @FXML
-    private TextField areaDescription,breakfastNo,requireCleaning;
+    private TextField areaDescription, breakfastNo, requireCleaning;
 
     @FXML
     private ComboBox<CleaningStatus> cleaningStatus;
 
     @FXML
-    private TextField accomInfoType,accomInfoAccommodates,accomInfoNo,accomInfoPricePerNight,accomInfoNotes;
+    private TextField accomInfoType, accomInfoAccommodates, accomInfoNo, accomInfoPricePerNight, accomInfoNotes;
 
     @FXML
-    private TextField receptionFName,receptionLName,receptionNo,receptionNoOfGuest,receptionCheckInDate,receptionnumberNight;
+    private TextField receptionFName, receptionLName, receptionNo, receptionNoOfGuest, receptionCheckInDate, receptionnumberNight;
 
     @FXML
     private CheckBox receptionIsBreakfastRequired;
 
+    @FXML
+    private Button receptionCheckIn, receptionCheckOut;
 
-    private void setAccommdatesInformatios(AccommodationDetails row){
+
+    private void setAccommdatesInformatios(AccommodationDetails row) {
         area.setValue(row.getArea());
         areaDescription.setText(row.getArea().getDescription());
-        breakfastNo.setText(row.getArea().getNumOfBreakfast()+"");
-        requireCleaning.setText(row.getArea().getNumRequireCleaning()+"");
+        breakfastNo.setText(row.getArea().getNumOfBreakfast() + "");
+        requireCleaning.setText(row.getArea().getNumRequireCleaning() + "");
 
         cleaningStatus.setValue(row.getCleaningStatus());
-        accomInfoType.setText(row.getAccommodationInfo().getAccommType()+"");
-        accomInfoAccommodates.setText(row.getAccommodationInfo().getAccommDates()+"");
-        accomInfoNo.setText(row.getAccommodationInfo().getAccommNumber()+"");
-        accomInfoPricePerNight.setText(row.getAccommodationInfo().getPricePerNight()+"");
+        accomInfoType.setText(row.getAccommodationInfo().getAccommType() + "");
+        accomInfoAccommodates.setText(row.getAccommodationInfo().getAccommDates() + "");
+        accomInfoNo.setText(row.getAccommodationInfo().getAccommNumber() + "");
+        accomInfoPricePerNight.setText(row.getAccommodationInfo().getPricePerNight() + "");
 
 
         receptionFName.setText(row.getReception().getFirstName());
         receptionLName.setText(row.getReception().getLastName());
-        receptionNo.setText(row.getReception().getTelephoneNo()+"");
-        receptionNoOfGuest.setText(row.getReception().getNumberGuests()+"");
+        receptionNo.setText(row.getReception().getTelephoneNo() + "");
+        receptionNoOfGuest.setText(row.getReception().getNumberGuests() + "");
         receptionCheckInDate.setText(row.getReception().getCheckInDate());
-        receptionnumberNight.setText(row.getReception().getNumberNights()+"");
-        receptionnumberNight.setText(row.getReception().getNumberNights()+"");
+        receptionnumberNight.setText(row.getReception().getNumberNights() + "");
+        receptionnumberNight.setText(row.getReception().getNumberNights() + "");
         accomInfoNotes.setText(row.getAccommodationInfo().getNotes());
         receptionIsBreakfastRequired.setSelected(row.getReception().isBreakfastRequired());
-
+        System.out.println(receptionNoOfGuest.getText());
+        if (receptionNoOfGuest.getText().equals("0")) {
+            receptionCheckIn.setDisable(true);
+            receptionCheckOut.setDisable(false);
+        } else if (!receptionNoOfGuest.getText().equals("0")) {
+            receptionCheckIn.setDisable(false);
+            receptionCheckOut.setDisable(true);
+        }
     }
+
     @FXML
     void initialize() {
         cleaningStatus.setItems(databaseModel.getCleaningStatuses());
@@ -89,10 +97,11 @@ public class LuxuryCampController {
         guestsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().getNumberGuests() + ""));
         breakfastColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().isBreakfastRequired() + ""));
         tableView.setItems(databaseModel.getAccommodationDetails());
+        receptionCheckOut.setDisable(true);
     }
 
     @FXML
-    void tableSelectedItem(){
+    void tableSelectedItem() {
         TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
         int row = pos.getRow();
         AccommodationDetails item = tableView.getItems().get(row);
@@ -101,16 +110,86 @@ public class LuxuryCampController {
 
 
     @FXML
-    void checkIn(){
+    void checkIn() {
+        if (tableView.getSelectionModel().getSelectedIndex() >= 0) {
+
+            AccommodationDetails detailsRow = null;
+            int position = -1;
+            ObservableList<AccommodationDetails> details = databaseModel.getAccommodationDetails();
+
+            TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(tableView.getSelectionModel().getSelectedIndex());
+            int row = pos.getRow();
+            AccommodationDetails item = tableView.getItems().get(row);
+            for (int i = 0; i < details.size(); i++) {
+                detailsRow = details.get(i);
+                if (detailsRow == item) {
+                    position = i;
+                    break;
+                }
+            }
+            if (position >= 0) {
+//                detailsRow.getArea().setArea(area.getValue().getArea());
+                detailsRow.getArea().setDescription(areaDescription.getText());
+                if (!breakfastNo.getText().matches(""))
+                    detailsRow.getArea().setNumOfBreakfast(Integer.parseInt(breakfastNo.getText()));
+                else
+                    detailsRow.getArea().setNumOfBreakfast(0);
+                detailsRow.getArea().setNumRequireCleaning(Integer.parseInt(requireCleaning.getText()));
+
+
+                detailsRow.getCleaningStatus().setStatus(cleaningStatus.getValue().getStatus());
+                detailsRow.getReception().setFirstName(receptionFName.getText());
+                detailsRow.getReception().setLastName(receptionLName.getText());
+                if (!breakfastNo.getText().matches(""))
+                    detailsRow.getReception().setTelephoneNo(Integer.parseInt(breakfastNo.getText()));
+                else
+                    detailsRow.getReception().setTelephoneNo(0);
+                if (!receptionNoOfGuest.getText().matches(""))
+                    detailsRow.getReception().setNumberGuests(Integer.parseInt(receptionNoOfGuest.getText()));
+                else
+                    detailsRow.getReception().setNumberGuests(0);
+                detailsRow.getReception().setCheckInDate(receptionCheckInDate.getText());
+                if (!receptionnumberNight.getText().matches(""))
+                    detailsRow.getReception().setNumberNights(Integer.parseInt(receptionnumberNight.getText()));
+                else
+                    detailsRow.getReception().setNumberNights(0);
+                detailsRow.getReception().setBreakfastRequired(receptionIsBreakfastRequired.isSelected());
+
+
+                detailsRow.getAccommodationInfo().setAccommType(accomInfoType.getText());
+                if (!accomInfoType.getText().matches(""))
+                    detailsRow.getAccommodationInfo().setAccommNumber(Integer.parseInt(accomInfoNo.getText()));
+                else
+                    detailsRow.getAccommodationInfo().setAccommNumber(0);
+                if (!accomInfoAccommodates.getText().matches(""))
+                    detailsRow.getAccommodationInfo().setAccommDates(Integer.parseInt(accomInfoAccommodates.getText()));
+                else
+                    detailsRow.getAccommodationInfo().setAccommDates(0);
+                if (!accomInfoPricePerNight.getText().matches(""))
+                    detailsRow.getAccommodationInfo().setPricePerNight(Double.parseDouble(accomInfoPricePerNight.getText()));
+                else
+                    detailsRow.getAccommodationInfo().setPricePerNight(0);
+                detailsRow.getAccommodationInfo().setNotes(accomInfoNotes.getText());
+
+                if (position == 0)
+                    details.set(position, detailsRow);
+                else
+                    details.add(detailsRow);
+
+
+            }
+            databaseModel.setAccommodationDetails(details);
+        }
 
     }
 
     @FXML
-    void checkOut(){
+    void checkOut() {
 
     }
+
     @FXML
-    void logOut(){
+    void logOut() {
 
     }
 }

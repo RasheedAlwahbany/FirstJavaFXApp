@@ -13,6 +13,7 @@ public class AccommodationArea {
         this.numRequireCleaning = numRequireCleaning;
     }
 
+
     public String getArea() {
         return area;
     }

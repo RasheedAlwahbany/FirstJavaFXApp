@@ -18,6 +18,7 @@ public class AccommodationsReception {
         this.breakfastRequired = breakfastRequired;
     }
 
+
     public String getFirstName() {
         return firstName;
     }
