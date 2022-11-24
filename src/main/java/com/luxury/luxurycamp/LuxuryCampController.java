@@ -109,6 +109,14 @@ public class LuxuryCampController {
                 toggleCleanStatus(oldValue,newValue);
             }
         });
+
+        if (receptionNoOfGuest.getText().equals("0")) {
+            receptionCheckIn.setDisable(true);
+            receptionCheckOut.setDisable(false);
+        } else if (!receptionNoOfGuest.getText().equals("0")) {
+            receptionCheckIn.setDisable(false);
+            receptionCheckOut.setDisable(true);
+        }
     }
 
     @FXML
@@ -177,7 +185,7 @@ public class LuxuryCampController {
                 detailsRow.getAccommodationInfo().setPricePerNight(0);
             detailsRow.getAccommodationInfo().setNotes(accomInfoNotes.getText());
 
-            if (position == 0)
+            if (position >= 0)
                 details.set(position, detailsRow);
             else
                 details.add(detailsRow);
