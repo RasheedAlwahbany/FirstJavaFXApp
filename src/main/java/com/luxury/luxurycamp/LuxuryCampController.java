@@ -2,14 +2,13 @@ package com.luxury.luxurycamp;
 
 import com.luxury.luxurycamp.models.AccommodationArea;
 import com.luxury.luxurycamp.models.AccommodationDetails;
+import com.luxury.luxurycamp.models.AccommodationsReception;
 import com.luxury.luxurycamp.models.CleaningStatus;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 public class LuxuryCampController {
     DatabaseModel databaseModel = new DatabaseModel();
@@ -39,8 +38,45 @@ public class LuxuryCampController {
     @FXML
     private ComboBox<AccommodationArea> area;
     @FXML
+    private TextField areaDescription,breakfastNo,requireCleaning;
+
+    @FXML
     private ComboBox<CleaningStatus> cleaningStatus;
 
+    @FXML
+    private TextField accomInfoType,accomInfoAccommodates,accomInfoNo,accomInfoPricePerNight,accomInfoNotes;
+
+    @FXML
+    private TextField receptionFName,receptionLName,receptionNo,receptionNoOfGuest,receptionCheckInDate,receptionnumberNight;
+
+    @FXML
+    private CheckBox receptionIsBreakfastRequired;
+
+
+    private void setAccommdatesInformatios(AccommodationDetails row){
+        area.setValue(row.getArea());
+        areaDescription.setText(row.getArea().getDescription());
+        breakfastNo.setText(row.getArea().getNumOfBreakfast()+"");
+        requireCleaning.setText(row.getArea().getNumRequireCleaning()+"");
+
+        cleaningStatus.setValue(row.getCleaningStatus());
+        accomInfoType.setText(row.getAccommodationInfo().getAccommType()+"");
+        accomInfoAccommodates.setText(row.getAccommodationInfo().getAccommDates()+"");
+        accomInfoNo.setText(row.getAccommodationInfo().getAccommNumber()+"");
+        accomInfoPricePerNight.setText(row.getAccommodationInfo().getPricePerNight()+"");
+
+
+        receptionFName.setText(row.getReception().getFirstName());
+        receptionLName.setText(row.getReception().getLastName());
+        receptionNo.setText(row.getReception().getTelephoneNo()+"");
+        receptionNoOfGuest.setText(row.getReception().getNumberGuests()+"");
+        receptionCheckInDate.setText(row.getReception().getCheckInDate());
+        receptionnumberNight.setText(row.getReception().getNumberNights()+"");
+        receptionnumberNight.setText(row.getReception().getNumberNights()+"");
+        accomInfoNotes.setText(row.getAccommodationInfo().getNotes());
+        receptionIsBreakfastRequired.setSelected(row.getReception().isBreakfastRequired());
+
+    }
     @FXML
     void initialize() {
         cleaningStatus.setItems(databaseModel.getCleaningStatuses());
@@ -53,5 +89,28 @@ public class LuxuryCampController {
         guestsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().getNumberGuests() + ""));
         breakfastColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().isBreakfastRequired() + ""));
         tableView.setItems(databaseModel.getAccommodationDetails());
+    }
+
+    @FXML
+    void tableSelectedItem(){
+        TablePosition pos = tableView.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        AccommodationDetails item = tableView.getItems().get(row);
+        setAccommdatesInformatios(item);
+    }
+
+
+    @FXML
+    void checkIn(){
+
+    }
+
+    @FXML
+    void checkOut(){
+
+    }
+    @FXML
+    void logOut(){
+
     }
 }
