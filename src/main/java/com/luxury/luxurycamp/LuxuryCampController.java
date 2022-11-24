@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class LuxuryCampController {
+    int is_clear;
     DatabaseModel databaseModel = new DatabaseModel();
     @FXML
     private TableView<AccommodationDetails> tableView;
@@ -86,10 +87,12 @@ public class LuxuryCampController {
             receptionCheckIn.setDisable(true);
             receptionCheckOut.setDisable(false);
         }
+        is_clear = 0;
     }
 
     @FXML
     void initialize() {
+        is_clear = 1;
         cleaningStatus.setItems(databaseModel.getCleaningStatuses());
         area.setItems(databaseModel.getAccommodationAreas());
         noColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNo() + ""));
@@ -102,11 +105,11 @@ public class LuxuryCampController {
         tableView.setItems(databaseModel.getAccommodationDetails());
 
 
-
         cleaningStatus.valueProperty().addListener(new ChangeListener<CleaningStatus>() {
             @Override
             public void changed(ObservableValue<? extends CleaningStatus> observableValue, CleaningStatus oldValue, CleaningStatus newValue) {
-                toggleCleanStatus(oldValue,newValue);
+                if (is_clear == 0)
+                    toggleCleanStatus(oldValue, newValue);
             }
         });
 
@@ -121,6 +124,7 @@ public class LuxuryCampController {
 
     @FXML
     void tableSelectedItem() {
+        is_clear = 1;
         AccommodationDetails item = tableView.getSelectionModel().getSelectedItem();
         setAccommdatesInformatios(item);
     }
@@ -226,7 +230,7 @@ public class LuxuryCampController {
 
     }
 
-    void toggleCleanStatus(CleaningStatus oldValue,CleaningStatus newValue){
+    void toggleCleanStatus(CleaningStatus oldValue, CleaningStatus newValue) {
         AccommodationDetails detailsRow = null;
         int position = -1;
         ObservableList<AccommodationDetails> details = databaseModel.getAccommodationDetails();
@@ -239,7 +243,7 @@ public class LuxuryCampController {
             }
         }
         if (position >= 0) {
-            if(newValue.getStatus().equals("Clean")) {
+            if (newValue.getStatus().equals("Clean")) {
                 detailsRow.getCleaningStatus().setStatus(newValue.getStatus());
                 detailsRow.setAvailability("Available");
                 detailsRow.getReception().setNumberGuests(0);
