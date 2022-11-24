@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="761.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luxury.luxurycamp.LuxuryCampController">
    <children>
       <Label layoutX="31.0" layoutY="25.0" text="Area" />
-      <ComboBox layoutX="132.0" layoutY="21.0" prefHeight="25.0" prefWidth="144.0" />
+      <ComboBox fx:id="area" layoutX="132.0" layoutY="21.0" prefHeight="25.0" prefWidth="144.0" />
       <TextField layoutX="335.0" layoutY="21.0" prefHeight="25.0" prefWidth="319.0" />
       <Label layoutX="31.0" layoutY="59.0" text="No. of Breakfasts" />
       <TextField layoutX="132.0" layoutY="55.0" prefHeight="25.0" prefWidth="144.0" />
@@ -23,13 +23,13 @@
       <Separator layoutX="13.0" layoutY="97.0" prefHeight="3.0" prefWidth="733.0" />
       <TableView fx:id="tableView" layoutX="7.0" layoutY="108.0" prefHeight="285.0" prefWidth="748.0">
         <columns>
-          <TableColumn fx:id="noC" prefWidth="75.0" text="No." />
-          <TableColumn fx:id="accommTypeC" prefWidth="118.40001678466797" text="Accomm. Type" />
-          <TableColumn fx:id="occupancyC" prefWidth="142.7999725341797" text="Occupancy" />
-          <TableColumn fx:id="availabilityC" minWidth="0.0" prefWidth="129.199951171875" text="Availability" />
-          <TableColumn fx:id="statusC" prefWidth="93.99993896484375" text="Status" />
-          <TableColumn fx:id="guestsC" prefWidth="100.4000244140625" text="Guests" />
-          <TableColumn fx:id="breakfastC" minWidth="2.79998779296875" prefWidth="88.0" text="Breakfast" />
+          <TableColumn fx:id="noColumn" prefWidth="75.0" text="No." />
+          <TableColumn fx:id="accommTypeColumn" prefWidth="118.40001678466797" text="Accomm. Type" />
+          <TableColumn fx:id="occupancyColumn" prefWidth="142.7999725341797" text="Occupancy" />
+          <TableColumn fx:id="availabilityColumn" minWidth="0.0" prefWidth="129.199951171875" text="Availability" />
+          <TableColumn fx:id="statusColumn" prefWidth="93.99993896484375" text="Status" />
+          <TableColumn fx:id="guestsColumn" prefWidth="100.4000244140625" text="Guests" />
+          <TableColumn fx:id="breakfastColumn" minWidth="2.79998779296875" prefWidth="88.0" text="Breakfast" />
         </columns>
       </TableView>
       <Button fx:id="btnLogout" layoutX="688.0" layoutY="21.0" mnemonicParsing="false" style="-fx-background-color: RED;" text="Logout" textFill="WHITE" />
@@ -46,7 +46,7 @@
       </Label>
       <Separator layoutX="380.0" layoutY="460.0" orientation="VERTICAL" prefHeight="291.0" prefWidth="1.0" />
       <Label layoutX="64.0" layoutY="490.0" text="Cleaning Status" />
-      <ComboBox layoutX="180.0" layoutY="486.0" prefHeight="25.0" prefWidth="181.0" />
+      <ComboBox fx:id="cleaningStatus" layoutX="180.0" layoutY="486.0" prefHeight="25.0" prefWidth="181.0" />
       <Label layoutX="62.0" layoutY="529.0" text="Accommodation Info">
          <font>
             <Font name="System Bold" size="18.0" />
