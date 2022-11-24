@@ -1,8 +1,9 @@
 package com.luxury.luxurycamp;
 
-import com.luxury.luxurycamp.models.*;
+import com.luxury.luxurycamp.models.AccommodationArea;
+import com.luxury.luxurycamp.models.AccommodationDetails;
+import com.luxury.luxurycamp.models.CleaningStatus;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -77,11 +78,11 @@ public class LuxuryCampController {
         receptionIsBreakfastRequired.setSelected(row.getReception().isBreakfastRequired());
         System.out.println(receptionNoOfGuest.getText());
         if (receptionNoOfGuest.getText().equals("0")) {
-            receptionCheckIn.setDisable(true);
-            receptionCheckOut.setDisable(false);
-        } else if (!receptionNoOfGuest.getText().equals("0")) {
             receptionCheckIn.setDisable(false);
             receptionCheckOut.setDisable(true);
+        } else if (!receptionNoOfGuest.getText().equals("0")) {
+            receptionCheckIn.setDisable(true);
+            receptionCheckOut.setDisable(false);
         }
     }
 

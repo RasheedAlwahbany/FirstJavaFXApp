@@ -11,10 +11,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("luxurycamp.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 450.0, 260.0);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Login");
         stage.setResizable(false);
@@ -27,10 +30,6 @@ public class Main extends Application {
         Stage stage = new Stage();
         stage.setTitle(title);
         stage.show();
-        ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
-    }
-
-    public static void main(String[] args) {
-        launch();
+        ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
     }
 }

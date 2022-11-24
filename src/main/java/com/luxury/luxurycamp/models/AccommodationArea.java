@@ -3,8 +3,8 @@ package com.luxury.luxurycamp.models;
 public class AccommodationArea {
     private String area;
     private String description;
-    private  int numOfBreakfast;
-    private  int numRequireCleaning;
+    private int numOfBreakfast;
+    private int numRequireCleaning;
 
     public AccommodationArea(String area, String description, int numOfBreakfast, int numRequireCleaning) {
         this.area = area;
@@ -12,7 +12,6 @@ public class AccommodationArea {
         this.numOfBreakfast = numOfBreakfast;
         this.numRequireCleaning = numRequireCleaning;
     }
-
 
     public String getArea() {
         return area;
