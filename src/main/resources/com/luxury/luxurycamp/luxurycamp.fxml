@@ -46,7 +46,7 @@
       </Label>
       <Separator layoutX="380.0" layoutY="460.0" orientation="VERTICAL" prefHeight="291.0" prefWidth="1.0" />
       <Label layoutX="64.0" layoutY="490.0" text="Cleaning Status" />
-      <ComboBox fx:id="cleaningStatus" layoutX="180.0" layoutY="486.0" prefHeight="25.0" prefWidth="181.0" />
+      <ComboBox fx:id="cleaningStatus" layoutX="180.0" layoutY="486.0"  prefHeight="25.0" prefWidth="181.0" />
       <Label layoutX="62.0" layoutY="529.0" text="Accommodation Info">
          <font>
             <Font name="System Bold" size="18.0" />

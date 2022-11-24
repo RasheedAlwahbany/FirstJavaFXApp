@@ -4,6 +4,8 @@ import com.luxury.luxurycamp.models.AccommodationArea;
 import com.luxury.luxurycamp.models.AccommodationDetails;
 import com.luxury.luxurycamp.models.CleaningStatus;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -98,6 +100,15 @@ public class LuxuryCampController {
         guestsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().getNumberGuests() + ""));
         breakfastColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getReception().isBreakfastRequired() + ""));
         tableView.setItems(databaseModel.getAccommodationDetails());
+
+
+
+        cleaningStatus.valueProperty().addListener(new ChangeListener<CleaningStatus>() {
+            @Override
+            public void changed(ObservableValue<? extends CleaningStatus> observableValue, CleaningStatus oldValue, CleaningStatus newValue) {
+                toggleCleanStatus(oldValue,newValue);
+            }
+        });
     }
 
     @FXML
@@ -134,7 +145,7 @@ public class LuxuryCampController {
             else
                 detailsRow.getArea().setNumOfBreakfast(0);
             detailsRow.getArea().setNumRequireCleaning(Integer.parseInt(requireCleaning.getText()));
-            detailsRow.getCleaningStatus().setStatus(cleaningStatus.getValue().getStatus());
+            detailsRow.getCleaningStatus().setStatus("Clean");
             detailsRow.getReception().setFirstName(receptionFName.getText());
             detailsRow.getReception().setLastName(receptionLName.getText());
             if (!breakfastNo.getText().matches(""))
@@ -207,8 +218,29 @@ public class LuxuryCampController {
 
     }
 
-    @FXML
-    void toggleCleanStatus(){
-        
+    void toggleCleanStatus(CleaningStatus oldValue,CleaningStatus newValue){
+        AccommodationDetails detailsRow = null;
+        int position = -1;
+        ObservableList<AccommodationDetails> details = databaseModel.getAccommodationDetails();
+        AccommodationDetails item = tableView.getSelectionModel().getSelectedItem();
+        for (int i = 0; i < details.size(); i++) {
+            detailsRow = details.get(i);
+            if (detailsRow == item) {
+                position = i;
+                break;
+            }
+        }
+        if (position >= 0) {
+            if(newValue.getStatus().equals("Clean")) {
+                detailsRow.getCleaningStatus().setStatus(newValue.getStatus());
+                detailsRow.setAvailability("Available");
+                detailsRow.getReception().setNumberGuests(0);
+                if (position >= 0)
+                    details.set(position, detailsRow);
+                else
+                    details.add(detailsRow);
+            }
+            databaseModel.setAccommodationDetails(details);
+        }
     }
 }
